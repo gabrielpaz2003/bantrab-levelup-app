@@ -5,7 +5,7 @@ import {
   BookIcon,
   DumbbellIcon,
   GameControllerIcon,
-} from '../assets/icons';
+} from '@/src/assets/icons';
 import React from 'react';
 
 export const mockRoadmapData: RoadmapModule[] = [
