@@ -13,6 +13,7 @@ import { Dropdown } from '../components/ui/Dropdown';
 import { RoadmapNode, PathLine } from '../components/roadmap';
 import { mockRoadmapData, mockUserProgress } from '../data/mockRoadmapData';
 import { RoadmapNode as RoadmapNodeType, RoadmapModule } from '../types';
+import { router } from 'expo-router';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -23,14 +24,27 @@ const RoadmapScreen: React.FC = () => {
   );
 
   const handleNodePress = (node: RoadmapNodeType) => {
-    Alert.alert(
-      node.title,
-      node.description || 'Continue your learning journey!',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Start', onPress: () => console.log('Starting:', node.id) },
-      ]
-    );
+    if (node.title === 'Ejercicios') {
+      router.push({
+        pathname: '/exercises',
+        params: { moduleId: activeModule.id },
+      });
+    } else if (node.title === 'Minijuegos') {
+      if (node.moduleId === 'credit-cards') {
+        router.push('/credit-card-minigame');
+      } else {
+        router.push('/minigame');
+      }
+    } else {
+      Alert.alert(
+        node.title,
+        node.description || 'Continue your learning journey!',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Start', onPress: () => console.log('Starting:', node.id) },
+        ]
+      );
+    }
   };
 
   const renderNode = (
