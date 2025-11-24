@@ -9,14 +9,18 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
+import { Dropdown } from '../components/ui/Dropdown';
 import { RoadmapNode, PathLine } from '../components/roadmap';
 import { mockRoadmapData, mockUserProgress } from '../data/mockRoadmapData';
-import { RoadmapNode as RoadmapNodeType } from '../types';
+import { RoadmapNode as RoadmapNodeType, RoadmapModule } from '../types';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const RoadmapScreen: React.FC = () => {
   const [userProgress] = useState(mockUserProgress);
+  const [activeModule, setActiveModule] = useState<RoadmapModule>(
+    mockRoadmapData[0]
+  );
 
   const handleNodePress = (node: RoadmapNodeType) => {
     Alert.alert(
@@ -29,7 +33,11 @@ const RoadmapScreen: React.FC = () => {
     );
   };
 
-  const renderNode = (node: RoadmapNodeType, index: number, totalNodes: number) => {
+  const renderNode = (
+    node: RoadmapNodeType,
+    index: number,
+    totalNodes: number
+  ) => {
     const isLastNode = index === totalNodes - 1;
     const shouldShowPath = !isLastNode;
     const isPathCompleted = userProgress.completedNodes.includes(node.id);
@@ -42,9 +50,18 @@ const RoadmapScreen: React.FC = () => {
             node.position.x === 0 ? styles.alignLeft : styles.alignRight,
           ]}
         >
-          <RoadmapNode node={node} onPress={handleNodePress} />
+          <RoadmapNode
+            node={node}
+            onPress={handleNodePress}
+            activeColor={activeModule.color || '#1CB0F6'}
+          />
         </View>
-        {shouldShowPath && <PathLine isCompleted={isPathCompleted} />}
+        {shouldShowPath && (
+          <PathLine
+            isCompleted={isPathCompleted}
+            color={activeModule.color || '#1CB0F6'}
+          />
+        )}
       </View>
     );
   };
@@ -62,26 +79,29 @@ const RoadmapScreen: React.FC = () => {
         </View>
       </View>
 
+      <View style={styles.moduleSelector}>
+        <Dropdown
+          items={mockRoadmapData}
+          onSelect={setActiveModule}
+          selectedValue={activeModule}
+          labelExtractor={(module) => module.title}
+        />
+      </View>
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {mockRoadmapData.map((level) => (
-          <View key={level.id} style={styles.levelSection}>
-            <View style={styles.levelHeader}>
-              <View style={[styles.levelBadge, { backgroundColor: level.color }]}>
-                <Text style={styles.levelTitle}>{level.title}</Text>
-              </View>
-            </View>
-
+        {activeModule && (
+          <View key={activeModule.id} style={styles.levelSection}>
             <View style={styles.nodesContainer}>
-              {level.nodes.map((node, index) =>
-                renderNode(node, index, level.nodes.length)
+              {activeModule.nodes.map((node, index) =>
+                renderNode(node, index, activeModule.nodes.length)
               )}
             </View>
           </View>
-        ))}
+        )}
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>Keep going! 🎉</Text>
@@ -94,14 +114,14 @@ const RoadmapScreen: React.FC = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#F0F4F8',
   },
   header: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#FFF',
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: '#E0E0E0',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -112,7 +132,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   progressContainer: {
-    backgroundColor: '#FFD900',
+    backgroundColor: '#FFC107',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
@@ -122,6 +142,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
+  moduleSelector: {
+    backgroundColor: '#FFFFFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+    padding: 15,
+    alignItems: 'center',
+  },
   scrollView: {
     flex: 1,
   },
@@ -130,25 +157,6 @@ const styles = StyleSheet.create({
   },
   levelSection: {
     marginBottom: 20,
-  },
-  levelHeader: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  levelBadge: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  levelTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF',
   },
   nodesContainer: {
     alignItems: 'center',
@@ -175,7 +183,7 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#999',
+    color: '#A0A0A0',
   },
 });
 

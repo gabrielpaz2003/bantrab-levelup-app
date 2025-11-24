@@ -1,67 +1,58 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { RoadmapNode as RoadmapNodeType } from '../../types';
+import { CheckIcon } from './CheckIcon';
+import { LockIcon } from './LockIcon';
 
 interface RoadmapNodeProps {
   node: RoadmapNodeType;
   onPress: (node: RoadmapNodeType) => void;
+  activeColor: string;
 }
 
-const RoadmapNode: React.FC<RoadmapNodeProps> = ({ node, onPress }) => {
-  const getNodeColor = () => {
-    switch (node.status) {
-      case 'completed':
-        return '#58CC02';
-      case 'in_progress':
-        return '#1CB0F6';
-      case 'available':
-        return '#FFD900';
-      case 'locked':
-        return '#E5E5E5';
-      default:
-        return '#E5E5E5';
-    }
-  };
-
+const RoadmapNode: React.FC<RoadmapNodeProps> = ({ node, onPress, activeColor }) => {
   const isInteractive = node.status === 'available' || node.status === 'in_progress';
+
+  const containerStyle = [
+    styles.container,
+    { backgroundColor: activeColor },
+    node.status === 'locked' && styles.lockedContainer,
+  ];
 
   return (
     <TouchableOpacity
-      style={[
-        styles.container,
-        { backgroundColor: getNodeColor() },
-        node.status === 'locked' && styles.lockedContainer,
-      ]}
+      style={containerStyle}
       onPress={() => isInteractive && onPress(node)}
       disabled={!isInteractive}
-      activeOpacity={0.7}
+      activeOpacity={0.8}
     >
       <View style={styles.iconContainer}>
-        <Text style={styles.icon}>{node.icon || '⭐'}</Text>
+        {typeof node.icon === 'string' ? (
+          <Text style={styles.icon}>{node.icon || '⭐'}</Text>
+        ) : (
+          React.cloneElement(node.icon as React.ReactElement, { color: '#FFF', size: 40 })
+        )}
       </View>
 
-      <Text style={[
-        styles.title,
-        node.status === 'locked' && styles.lockedText
-      ]} numberOfLines={1}>
+      <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
         {node.title}
       </Text>
 
       {node.status === 'completed' && (
         <View style={styles.checkmark}>
-          <Text style={styles.checkmarkText}>✓</Text>
+          <CheckIcon color="#FFF" size={16} />
         </View>
       )}
 
       {node.status === 'locked' && (
         <View style={styles.lockIcon}>
-          <Text style={styles.lockText}>🔒</Text>
+          <LockIcon color="#FFF" size={24} />
         </View>
       )}
 
       {node.points && node.status !== 'locked' && (
         <View style={styles.pointsBadge}>
-          <Text style={styles.pointsText}>{node.points}</Text>
+          <Text style={styles.pointsText}>{node.points} XP</Text>
         </View>
       )}
     </TouchableOpacity>
@@ -70,78 +61,72 @@ const RoadmapNode: React.FC<RoadmapNodeProps> = ({ node, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 120,
+    height: 120,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 15,
-    marginHorizontal: 20,
+    marginVertical: 20,
+    marginHorizontal: 25,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 10,
     position: 'relative',
+    padding: 10,
   },
   lockedContainer: {
-    opacity: 0.5,
+    backgroundColor: '#B0B0B0',
+    opacity: 0.7,
   },
   iconContainer: {
-    marginBottom: 2,
+    marginBottom: 8,
   },
   icon: {
-    fontSize: 32,
+    fontSize: 40,
   },
   title: {
-    fontSize: 10,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: 'bold',
     color: '#FFF',
     textAlign: 'center',
-    marginTop: 2,
-  },
-  lockedText: {
-    color: '#999',
   },
   checkmark: {
     position: 'absolute',
-    top: -5,
-    right: -5,
-    backgroundColor: '#58CC02',
+    top: 8,
+    right: 8,
+    backgroundColor: 'rgba(0,0,0,0.2)',
     width: 24,
     height: 24,
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#FFF',
-  },
-  checkmarkText: {
-    color: '#FFF',
-    fontSize: 14,
-    fontWeight: 'bold',
   },
   lockIcon: {
     position: 'absolute',
-    top: -5,
-    right: -5,
-  },
-  lockText: {
-    fontSize: 20,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 30,
   },
   pointsBadge: {
     position: 'absolute',
-    bottom: -8,
+    bottom: -10,
     backgroundColor: '#FF9600',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 15,
     borderWidth: 2,
     borderColor: '#FFF',
   },
   pointsText: {
     color: '#FFF',
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
   },
 });

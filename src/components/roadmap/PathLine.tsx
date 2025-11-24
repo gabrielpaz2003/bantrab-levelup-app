@@ -12,7 +12,10 @@ const PathLine: React.FC<PathLineProps> = ({ color = '#E5E5E5', isCompleted = fa
       <View
         style={[
           styles.line,
-          { backgroundColor: isCompleted ? '#58CC02' : color },
+          {
+            backgroundColor: color,
+            opacity: isCompleted ? 1 : 0.3,
+          },
         ]}
       />
     </View>

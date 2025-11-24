@@ -1,3 +1,4 @@
+import React from 'react';
 export type NodeStatus = 'locked' | 'available' | 'in_progress' | 'completed';
 
 export interface RoadmapNode {
@@ -9,13 +10,13 @@ export interface RoadmapNode {
     x: number;
     y: number;
   };
-  level: number;
-  icon?: string;
+  moduleId: string;
+  icon?: React.ReactNode;
   points?: number;
   connectedTo?: string[];
 }
 
-export interface RoadmapLevel {
+export interface RoadmapModule {
   id: string;
   title: string;
   nodes: RoadmapNode[];
