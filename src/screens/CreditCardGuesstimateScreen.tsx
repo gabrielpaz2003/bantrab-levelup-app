@@ -36,7 +36,7 @@ const calculateRealCost = (price: number, annualInterestRate: number) => {
 const getRandomItem = (items: Item[]) => items[Math.floor(Math.random() * items.length)];
 const getRandomCard = (cards: CreditCard[]) => cards[Math.floor(Math.random() * cards.length)];
 
-const CreditCardGuesstimateScreen = () => {
+const CreditCardGuesstimateScreen = ({ onComplete }: { onComplete?: () => void }) => {
   const [item, setItem] = useState(getRandomItem(mockItemData));
   const [card, setCard] = useState(getRandomCard(mockCreditCardData));
   const [guess, setGuess] = useState(item.price);
@@ -67,7 +67,11 @@ const CreditCardGuesstimateScreen = () => {
   };
 
   const handleGoBack = () => {
-    router.back();
+    if (onComplete) {
+      onComplete();
+    } else {
+      router.back();
+    }
   };
 
   const getScore = () => {

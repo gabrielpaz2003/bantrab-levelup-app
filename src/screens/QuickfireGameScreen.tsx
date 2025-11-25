@@ -17,7 +17,7 @@ import { mockCheckingAccountGameData } from '@/src/data/mockCheckingAccountGameD
 const { width: screenWidth } = Dimensions.get('window');
 const SWIPE_THRESHOLD = screenWidth * 0.4;
 
-const QuickfireGameScreen = () => {
+const QuickfireGameScreen = ({ onComplete }: { onComplete?: () => void }) => {
   const [questions] = useState(mockCheckingAccountGameData);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -76,7 +76,11 @@ const QuickfireGameScreen = () => {
 
   const handleGoBack = () => {
     setIsGameOver(false);
-    router.back();
+    if (onComplete) {
+      onComplete();
+    } else {
+      router.back();
+    }
   };
   
   const currentQuestion = questions[currentQuestionIndex];

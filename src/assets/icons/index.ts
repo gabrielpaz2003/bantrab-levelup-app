@@ -3,3 +3,6 @@ export * from './CheckingAccountIcon';
 export * from './BookIcon';
 export * from './DumbbellIcon';
 export * from './GameControllerIcon';
+export * from './ArrowLeftIcon';
+export * from './ArrowRightIcon';
+export * from './StarIcon';

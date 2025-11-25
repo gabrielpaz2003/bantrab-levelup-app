@@ -24,17 +24,17 @@ const RoadmapScreen: React.FC = () => {
   );
 
   const handleNodePress = (node: RoadmapNodeType) => {
+    let sequence = [];
     if (node.title === 'Ejercicios') {
-      router.push({
-        pathname: '/exercises',
-        params: { moduleId: activeModule.id },
-      });
+      sequence = [
+        { type: 'exercise', moduleId: activeModule.id },
+        { type: 'minigame', minigameId: 'quickfire-game' },
+      ];
     } else if (node.title === 'Minijuegos') {
-      if (node.moduleId === 'credit-cards') {
-        router.push('/credit-card-minigame');
-      } else {
-        router.push('/minigame');
-      }
+      sequence = [
+        { type: 'minigame', minigameId: 'credit-card-guesstimate' },
+        { type: 'minigame', minigameId: 'quickfire-game' },
+      ];
     } else {
       Alert.alert(
         node.title,
@@ -44,7 +44,13 @@ const RoadmapScreen: React.FC = () => {
           { text: 'Start', onPress: () => console.log('Starting:', node.id) },
         ]
       );
+      return;
     }
+
+    router.push({
+      pathname: '/exercises',
+      params: { sequence: JSON.stringify(sequence) },
+    });
   };
 
   const renderNode = (
