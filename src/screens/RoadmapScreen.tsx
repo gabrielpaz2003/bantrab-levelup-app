@@ -25,7 +25,12 @@ const RoadmapScreen: React.FC = () => {
 
   const handleNodePress = (node: RoadmapNodeType) => {
     let sequence = [];
-    if (node.title === 'Ejercicios') {
+
+    if (node.title === 'Contenido') {
+      // Navigate to content module (chat-like presentation)
+      router.push('/credit-card-content');
+      return;
+    } else if (node.title === 'Ejercicios') {
       sequence = [
         { type: 'exercise', moduleId: activeModule.id },
         { type: 'minigame', minigameId: 'quickfire-game' },

@@ -11,7 +11,7 @@ interface RoadmapNodeProps {
 }
 
 const RoadmapNode: React.FC<RoadmapNodeProps> = ({ node, onPress, activeColor }) => {
-  const isInteractive = node.status === 'available' || node.status === 'in_progress';
+  const isInteractive = node.status !== 'locked';
 
   const containerStyle = [
     styles.container,
