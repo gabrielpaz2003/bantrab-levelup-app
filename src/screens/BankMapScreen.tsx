@@ -1,28 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { mockCreditExercises } from '../src/data/mockCreditExercises';
-import MultipleChoice from '../src/components/exercises/MultipleChoice';
-import Swipe from '../src/components/exercises/Swipe';
-import GuesstimateSlider from '../src/components/exercises/GuesstimateSlider';
-import OrderDrag from '../src/components/exercises/OrderDrag';
-import BankMapGame from '../src/components/exercises/BankMapGame';
+import BankMapGame from '../components/exercises/BankMapGame';
+import { mockBankMapExercises } from '../data/mockBankMapExercises';
 import { ThemedText } from '@/components/themed-text';
 import { colors } from '@/constants/theme';
 import { StarIcon } from '@/src/assets/icons';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
-const ExerciseScreen = () => {
+const BankMapScreen = () => {
   const router = useRouter();
-  const [sequence, setSequence] = useState(mockCreditExercises);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
 
   const handleComplete = (points = 10) => {
     const newScore = score + points;
     setScore(newScore);
-    if (currentIndex < sequence.length - 1) {
+
+    if (currentIndex < mockBankMapExercises.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
       router.replace({
@@ -32,23 +28,7 @@ const ExerciseScreen = () => {
     }
   };
 
-  const renderExercise = () => {
-    const exercise = sequence[currentIndex];
-    switch (exercise.type) {
-      case 'multiple-choice':
-        return <MultipleChoice exercise={exercise} onComplete={handleComplete} />;
-      case 'binary-swipe':
-        return <Swipe exercise={exercise} onComplete={handleComplete} />;
-      case 'guesstimate-slider':
-        return <GuesstimateSlider exercise={exercise} onComplete={handleComplete} />;
-      case 'order-drag':
-        return <OrderDrag exercise={exercise} onComplete={handleComplete} />;
-      case 'bank-map':
-        return <BankMapGame exercise={exercise} onComplete={handleComplete} />;
-      default:
-        return <ThemedText>Unknown exercise type</ThemedText>;
-    }
-  };
+  const currentExercise = mockBankMapExercises[currentIndex];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -58,12 +38,17 @@ const ExerciseScreen = () => {
           <StarIcon size={24} color={colors.accentYellow} fill={colors.accentYellow} />
           <ThemedText style={styles.scoreText}>{score}</ThemedText>
         </View>
+        <View style={styles.progressContainer}>
+          <ThemedText style={styles.progressText}>
+            {currentIndex + 1} / {mockBankMapExercises.length}
+          </ThemedText>
+        </View>
         <TouchableOpacity onPress={() => router.back()}>
           <IconSymbol name="xmark.circle.fill" size={28} color={colors.white} />
         </TouchableOpacity>
       </View>
-      <Animated.View style={styles.exerciseContainer} key={currentIndex} entering={FadeIn} exiting={FadeOut}>
-        {renderExercise()}
+      <Animated.View style={styles.gameContainer} key={currentIndex} entering={FadeIn} exiting={FadeOut}>
+        <BankMapGame exercise={currentExercise} onComplete={handleComplete} />
       </Animated.View>
     </SafeAreaView>
   );
@@ -91,10 +76,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 10,
   },
-  exerciseContainer: {
+  progressContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  progressText: {
+    color: colors.white,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  gameContainer: {
     flex: 1,
     backgroundColor: colors.background,
   },
 });
 
-export default ExerciseScreen;
+export default BankMapScreen;

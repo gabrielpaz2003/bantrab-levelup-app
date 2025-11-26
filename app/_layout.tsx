@@ -20,6 +20,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="exercises" options={{ presentation: 'modal', headerShown: false }} />
           <Stack.Screen name="credit-card-content" options={{ presentation: 'modal', headerShown: false }} />
+          <Stack.Screen name="bank-map-minigame" options={{ presentation: 'modal', headerShown: false }} />
           <Stack.Screen name="game-over" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
         </Stack>

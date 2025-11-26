@@ -24,22 +24,18 @@ const RoadmapScreen: React.FC = () => {
   );
 
   const handleNodePress = (node: RoadmapNodeType) => {
-    let sequence = [];
-
     if (node.title === 'Contenido') {
       // Navigate to content module (chat-like presentation)
       router.push('/credit-card-content');
       return;
     } else if (node.title === 'Ejercicios') {
-      sequence = [
-        { type: 'exercise', moduleId: activeModule.id },
-        { type: 'minigame', minigameId: 'quickfire-game' },
-      ];
+      // Navigate to exercises screen
+      router.push('/exercises');
+      return;
     } else if (node.title === 'Minijuegos') {
-      sequence = [
-        { type: 'minigame', minigameId: 'credit-card-guesstimate' },
-        { type: 'minigame', minigameId: 'quickfire-game' },
-      ];
+      // Navigate to bank map minigame
+      router.push('/bank-map-minigame');
+      return;
     } else {
       Alert.alert(
         node.title,
@@ -51,11 +47,6 @@ const RoadmapScreen: React.FC = () => {
       );
       return;
     }
-
-    router.push({
-      pathname: '/exercises',
-      params: { sequence: JSON.stringify(sequence) },
-    });
   };
 
   const renderNode = (

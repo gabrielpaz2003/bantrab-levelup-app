@@ -6,3 +6,4 @@ export * from './GameControllerIcon';
 export * from './ArrowLeftIcon';
 export * from './ArrowRightIcon';
 export * from './StarIcon';
+export * from './BantrabLogo';
