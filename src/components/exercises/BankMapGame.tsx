@@ -1,20 +1,18 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity, Text, Image } from 'react-native';
-import Svg, { Rect, Path, G, Circle, Ellipse, Defs, LinearGradient, Stop, RadialGradient, Text as SvgText } from 'react-native-svg';
+import { ThemedView } from '@/components/themed-view';
+import { colors } from '@/constants/theme';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withSequence,
-  withRepeat,
-  withDelay,
+  cancelAnimation,
   Easing,
   runOnJS,
-  cancelAnimation,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming
 } from 'react-native-reanimated';
-import { ThemedView } from '@/components/themed-view';
-import { ThemedText } from '@/components/themed-text';
-import { colors } from '@/constants/theme';
+import Svg, { Circle, Defs, Ellipse, G, LinearGradient, Path, RadialGradient, Rect, Stop, Text as SvgText } from 'react-native-svg';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const MAP_PADDING = 5;
@@ -1199,7 +1197,7 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
 
         {/* ATM - image asset */}
         <Image
-          source={require('../../../assets/images/ATM.png')}
+          source={require('../../../assets/images/atm.png')}
           style={{
             position: 'absolute',
             left: STATIONS.atm.gridX * CELL_SIZE - CELL_SIZE * 0.4,
