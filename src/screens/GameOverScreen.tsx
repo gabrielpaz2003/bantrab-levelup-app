@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-na
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
-import { colors } from '@/constants/theme';
+import { colors, radii, spacing } from '@/constants/theme';
 import { StarIcon } from '@/src/assets/icons';
 
 const GameOverScreen = () => {
@@ -43,16 +43,16 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     color: colors.primary,
-    marginBottom: 40,
+    marginBottom: spacing.xl + 8,
   },
   scoreContainer: {
     alignItems: 'center',
-    marginBottom: 60,
+    marginBottom: spacing.xl + 28,
   },
   scoreLabel: {
     fontSize: 24,
     color: colors.text,
-    marginBottom: 20,
+    marginBottom: spacing.lg - 4,
   },
   score: {
     flexDirection: 'row',
@@ -62,13 +62,13 @@ const styles = StyleSheet.create({
     fontSize: 64,
     fontWeight: 'bold',
     color: colors.accentYellow,
-    marginLeft: 20,
+    marginLeft: spacing.lg - 4,
   },
   button: {
     backgroundColor: colors.primary,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 999,
+    paddingVertical: spacing.md - 1,
+    paddingHorizontal: spacing.xl + 8,
+    borderRadius: radii.full,
   },
   buttonText: {
     color: colors.white,

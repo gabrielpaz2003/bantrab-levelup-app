@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     borderRadius: radii.md,
     borderWidth: 2,
-    borderColor: '#E0E0E0',
+    borderColor: colors.graySoft,
     alignItems: 'center',
   },
   binaryButtonSelected: {

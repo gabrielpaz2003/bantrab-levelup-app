@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { RoadmapNode as RoadmapNodeType } from '../../types';
 import { CheckIcon } from './CheckIcon';
 import { LockIcon } from './LockIcon';
+import { colors, spacing, radii } from '@/constants/theme';
 
 interface RoadmapNodeProps {
   node: RoadmapNodeType;
@@ -30,23 +31,26 @@ const RoadmapNode: React.FC<RoadmapNodeProps> = ({ node, onPress, activeColor })
         {typeof node.icon === 'string' ? (
           <Text style={styles.icon}>{node.icon || '⭐'}</Text>
         ) : (
-          React.cloneElement(node.icon as React.ReactElement, { color: '#FFF', size: 40 })
+          React.cloneElement(node.icon as React.ReactElement, {
+            color: node.status === 'locked' ? colors.graySoft : colors.white,
+            size: 40
+          })
         )}
       </View>
 
-      <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+      <Text style={[styles.title, node.status === 'locked' && { color: colors.graySoft }]} numberOfLines={2} ellipsizeMode="tail">
         {node.title}
       </Text>
 
       {node.status === 'completed' && (
         <View style={styles.checkmark}>
-          <CheckIcon color="#FFF" size={16} />
+          <CheckIcon color={colors.white} size={16} />
         </View>
       )}
 
       {node.status === 'locked' && (
         <View style={styles.lockIcon}>
-          <LockIcon color="#FFF" size={24} />
+          <LockIcon color={colors.graySoft} size={24} />
         </View>
       )}
 
@@ -66,22 +70,24 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20,
-    marginHorizontal: 25,
+    marginVertical: spacing.lg,
+    marginHorizontal: spacing.lg + 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 10,
     position: 'relative',
-    padding: 10,
+    padding: spacing.sm + 2,
   },
   lockedContainer: {
-    backgroundColor: '#B0B0B0',
-    opacity: 0.7,
+    backgroundColor: colors.white,
+    borderWidth: 3,
+    borderColor: colors.graySoft,
+    opacity: 0.8,
   },
   iconContainer: {
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   icon: {
     fontSize: 40,
@@ -89,14 +95,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#FFF',
+    color: colors.white,
     textAlign: 'center',
   },
   checkmark: {
     position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    top: spacing.sm,
+    right: spacing.sm,
+    backgroundColor: colors.accentYellow,
     width: 24,
     height: 24,
     borderRadius: 12,
@@ -111,21 +117,21 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(161, 171, 180, 0.3)',
     borderRadius: 30,
   },
   pointsBadge: {
     position: 'absolute',
     bottom: -10,
-    backgroundColor: '#FF9600',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 15,
+    backgroundColor: colors.accentYellow,
+    paddingHorizontal: spacing.sm + 2,
+    paddingVertical: spacing.xs,
+    borderRadius: radii.full,
     borderWidth: 2,
-    borderColor: '#FFF',
+    borderColor: colors.white,
   },
   pointsText: {
-    color: '#FFF',
+    color: colors.text,
     fontSize: 12,
     fontWeight: 'bold',
   },

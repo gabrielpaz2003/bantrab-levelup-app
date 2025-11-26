@@ -7,6 +7,7 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
+import { colors, spacing, radii } from '@/constants/theme';
 
 interface DropdownProps<T> {
   items: T[];
@@ -77,20 +78,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 12,
-    backgroundColor: '#FFF',
-    borderRadius: 8,
+    padding: spacing.md - 4,
+    backgroundColor: colors.white,
+    borderRadius: radii.sm,
     borderWidth: 1,
-    borderColor: '#E5E5E5',
+    borderColor: colors.graySoft,
     minWidth: 200,
   },
   dropdownButtonText: {
     fontSize: 16,
-    color: '#333',
+    color: colors.text,
   },
   dropdownIcon: {
     fontSize: 12,
-    color: '#333',
+    color: colors.text,
   },
   modalOverlay: {
     flex: 1,
@@ -99,19 +100,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#FFF',
-    borderRadius: 8,
-    padding: 10,
+    backgroundColor: colors.white,
+    borderRadius: radii.sm,
+    padding: spacing.sm + 2,
     width: '80%',
     maxHeight: '60%',
   },
   modalItem: {
-    padding: 15,
+    padding: spacing.md - 1,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: colors.graySoft,
   },
   modalItemText: {
     fontSize: 16,
-    color: '#333',
+    color: colors.text,
   },
 });

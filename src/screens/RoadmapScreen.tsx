@@ -14,6 +14,7 @@ import { RoadmapNode, PathLine } from '../components/roadmap';
 import { mockRoadmapData, mockUserProgress } from '../data/mockRoadmapData';
 import { RoadmapNode as RoadmapNodeType, RoadmapModule } from '../types';
 import { router } from 'expo-router';
+import { colors, spacing, typography, radii } from '@/constants/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -69,13 +70,13 @@ const RoadmapScreen: React.FC = () => {
           <RoadmapNode
             node={node}
             onPress={handleNodePress}
-            activeColor={activeModule.color || '#1CB0F6'}
+            activeColor={activeModule.color || colors.primary}
           />
         </View>
         {shouldShowPath && (
           <PathLine
             isCompleted={isPathCompleted}
-            color={activeModule.color || '#1CB0F6'}
+            color={activeModule.color || colors.primary}
           />
         )}
       </View>
@@ -84,7 +85,7 @@ const RoadmapScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
+      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
 
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Your Learning Path</Text>
@@ -130,49 +131,48 @@ const RoadmapScreen: React.FC = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F0F4F8',
+    backgroundColor: colors.background,
   },
   header: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    backgroundColor: colors.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: colors.graySoft,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   headerTitle: {
-    fontSize: 24,
+    ...typography.title,
     fontWeight: 'bold',
-    color: '#333',
   },
   progressContainer: {
-    backgroundColor: '#FFC107',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
+    backgroundColor: colors.accentYellow,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm - 2,
+    borderRadius: radii.md,
   },
   progressText: {
-    fontSize: 14,
+    ...typography.body,
     fontWeight: 'bold',
-    color: '#333',
+    color: colors.text,
   },
   moduleSelector: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-    padding: 15,
+    borderBottomColor: colors.graySoft,
+    padding: spacing.md - 1,
     alignItems: 'center',
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    paddingVertical: 20,
+    paddingVertical: spacing.lg,
   },
   levelSection: {
-    marginBottom: 20,
+    marginBottom: spacing.lg,
   },
   nodesContainer: {
     alignItems: 'center',
@@ -197,9 +197,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#A0A0A0',
+    ...typography.subtitle,
+    color: colors.graySoft,
   },
 });
 

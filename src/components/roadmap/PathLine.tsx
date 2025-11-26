@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { colors } from '@/constants/theme';
 
 interface PathLineProps {
   color?: string;
   isCompleted?: boolean;
 }
 
-const PathLine: React.FC<PathLineProps> = ({ color = '#E5E5E5', isCompleted = false }) => {
+const PathLine: React.FC<PathLineProps> = ({ color = colors.graySoft, isCompleted = false }) => {
   return (
     <View style={styles.container}>
       <View
