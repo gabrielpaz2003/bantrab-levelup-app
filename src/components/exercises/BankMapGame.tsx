@@ -395,7 +395,7 @@ const Rug = ({ x, y, width = CELL_SIZE * 2, height = CELL_SIZE * 1.2, color = '#
     {/* Main rug */}
     <Rect x={0} y={0} width={width} height={height} fill={color} rx={4} opacity={0.8} />
     {/* Border */}
-    <Rect x={width * 0.05} y={height * 0.08} width={width * 0.9} height={height * 0.84} fill="none" stroke="#8B0000" strokeWidth={2} rx={2} />
+    <Rect x={width * 0.05} y={height * 0.08} width={width * 0.9} height={height * 0.84} fill="none" stroke="#808080" strokeWidth={2} rx={2} />
     {/* Pattern lines */}
     <Rect x={width * 0.1} y={height * 0.15} width={width * 0.8} height={height * 0.02} fill="#FFD700" opacity={0.6} />
     <Rect x={width * 0.1} y={height * 0.83} width={width * 0.8} height={height * 0.02} fill="#FFD700" opacity={0.6} />
@@ -638,6 +638,7 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
   const [hasReachedTarget, setHasReachedTarget] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [wrongStation, setWrongStation] = useState<string | null>(null);
+  const [facingDirection, setFacingDirection] = useState<'front' | 'back' | 'left' | 'right'>('front');
 
   const playerX = useSharedValue(playerPos.gridX * CELL_SIZE + CELL_SIZE / 2);
   const playerY = useSharedValue(playerPos.gridY * CELL_SIZE + CELL_SIZE / 2);
@@ -672,7 +673,7 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
 
   const animatedPlayerStyle = useAnimatedStyle(() => ({
     position: 'absolute',
-    left: playerX.value - CELL_SIZE * 0.4,
+    left: playerX.value - CELL_SIZE * 0.6,
     top: playerY.value - CELL_SIZE * 0.5,
     zIndex: 100,
   }));
@@ -696,6 +697,17 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
     const currentPos = index > 0 ? path[index - 1] : { x: playerPos.gridX, y: playerPos.gridY };
     const targetX = nextPos.x * CELL_SIZE + CELL_SIZE / 2;
     const targetY = nextPos.y * CELL_SIZE + CELL_SIZE / 2;
+
+    // Update facing direction based on movement
+    if (nextPos.y < currentPos.y) {
+      setFacingDirection('back'); // Moving up
+    } else if (nextPos.y > currentPos.y) {
+      setFacingDirection('front'); // Moving down
+    } else if (nextPos.x < currentPos.x) {
+      setFacingDirection('left'); // Moving left
+    } else if (nextPos.x > currentPos.x) {
+      setFacingDirection('right'); // Moving right
+    }
 
     // Check if moving horizontally or vertically
     const isHorizontalMove = nextPos.x !== currentPos.x;
@@ -743,6 +755,17 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
     const currentPos = index > 0 ? path[index - 1] : { x: playerPos.gridX, y: playerPos.gridY };
     const targetX = nextPos.x * CELL_SIZE + CELL_SIZE / 2;
     const targetY = nextPos.y * CELL_SIZE + CELL_SIZE / 2;
+
+    // Update facing direction based on movement
+    if (nextPos.y < currentPos.y) {
+      setFacingDirection('back'); // Moving up
+    } else if (nextPos.y > currentPos.y) {
+      setFacingDirection('front'); // Moving down
+    } else if (nextPos.x < currentPos.x) {
+      setFacingDirection('left'); // Moving left
+    } else if (nextPos.x > currentPos.x) {
+      setFacingDirection('right'); // Moving right
+    }
 
     // Check if moving horizontally or vertically
     const isHorizontalMove = nextPos.x !== currentPos.x;
@@ -1050,24 +1073,10 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
             y={(GRID_ROWS - 3) * CELL_SIZE + CELL_SIZE / 2}
             width={CELL_SIZE * 2.2}
             height={CELL_SIZE * 2.8}
-            color="#8B0000"
+            color="#E31C79"
           />
 
-          {/* Waiting area sofas */}
-          <Sofa
-            x={5 * CELL_SIZE + CELL_SIZE / 2}
-            y={(GRID_ROWS - 4) * CELL_SIZE + CELL_SIZE / 2}
-            width={CELL_SIZE * 1.3}
-            height={CELL_SIZE * 0.55}
-            color="#4A4A4A"
-          />
-          <Sofa
-            x={5 * CELL_SIZE + CELL_SIZE / 2}
-            y={(GRID_ROWS - 2) * CELL_SIZE + CELL_SIZE / 2}
-            width={CELL_SIZE * 1.3}
-            height={CELL_SIZE * 0.55}
-            color="#4A4A4A"
-          />
+          {/* Waiting area sofas - using image assets */}
 
           {/* Coffee table between sofas */}
           <CoffeeTable
@@ -1077,23 +1086,7 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
             height={CELL_SIZE * 0.35}
           />
 
-          {/* Left wall sofas - facing right */}
-          <Sofa
-            x={0 * CELL_SIZE + CELL_SIZE / 2}
-            y={5 * CELL_SIZE + CELL_SIZE / 2}
-            width={CELL_SIZE * 0.9}
-            height={CELL_SIZE * 0.5}
-            color="#4A4A4A"
-            rotation={90}
-          />
-          <Sofa
-            x={0 * CELL_SIZE + CELL_SIZE / 2}
-            y={7 * CELL_SIZE + CELL_SIZE / 2}
-            width={CELL_SIZE * 0.9}
-            height={CELL_SIZE * 0.5}
-            color="#4A4A4A"
-            rotation={90}
-          />
+          {/* Left wall sofas - using image assets */}
 
           {/* ===== WALL DECORATIONS ===== */}
 
@@ -1133,38 +1126,11 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
 
           {/* ===== STATIONS ===== */}
 
-          {/* ATM Machine with label - left wall */}
-          <ATMMachineWithLabel
-            x={STATIONS.atm.gridX * CELL_SIZE + CELL_SIZE / 2}
-            y={STATIONS.atm.gridY * CELL_SIZE + CELL_SIZE / 2}
-            size={CELL_SIZE * 1.1}
-          />
+          {/* ATM - using image asset */}
 
-          {/* Help Desk - horizontal at top center */}
-          <DuoCharacter
-            x={STATIONS.helpDesk.gridX * CELL_SIZE + CELL_SIZE / 2}
-            y={(STATIONS.helpDesk.gridY - 0.5) * CELL_SIZE + CELL_SIZE * 0.3}
-            size={CELL_SIZE * 0.75}
-            isPlayer={false}
-          />
-          <HelpDeskStation
-            x={STATIONS.helpDesk.gridX * CELL_SIZE + CELL_SIZE / 2}
-            y={STATIONS.helpDesk.gridY * CELL_SIZE + CELL_SIZE / 2}
-            size={CELL_SIZE}
-          />
+          {/* Help Desk - using image asset */}
 
-          {/* Payment Station (Caja) - horizontal like HelpDesk */}
-          <DuoCharacter
-            x={STATIONS.paymentStation.gridX * CELL_SIZE + CELL_SIZE / 2}
-            y={(STATIONS.paymentStation.gridY - 0.5) * CELL_SIZE + CELL_SIZE * 0.3}
-            size={CELL_SIZE * 0.75}
-            isPlayer={false}
-          />
-          <PaymentStation
-            x={STATIONS.paymentStation.gridX * CELL_SIZE + CELL_SIZE / 2}
-            y={STATIONS.paymentStation.gridY * CELL_SIZE + CELL_SIZE / 2}
-            size={CELL_SIZE}
-          />
+          {/* Payment Station (Caja) - using image asset */}
 
           {/* Entrance marker */}
           <Rect
@@ -1177,19 +1143,141 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
           />
         </Svg>
 
+        {/* Payment Station (Caja) - image asset */}
+        <Image
+          source={require('../../../assets/images/Cajera_1.png')}
+          style={{
+            position: 'absolute',
+            left: STATIONS.paymentStation.gridX * CELL_SIZE - CELL_SIZE * 0.4,
+            top: STATIONS.paymentStation.gridY * CELL_SIZE - CELL_SIZE * 0.65,
+            width: CELL_SIZE * 1.8,
+            height: CELL_SIZE * 1.8,
+          }}
+          resizeMode="contain"
+        />
+        {/* Caja label */}
+        <View
+          style={{
+            position: 'absolute',
+            left: STATIONS.paymentStation.gridX * CELL_SIZE - CELL_SIZE * 0.4,
+            top: STATIONS.paymentStation.gridY * CELL_SIZE + CELL_SIZE * 0.7,
+            width: CELL_SIZE * 1.8,
+            alignItems: 'center',
+          }}
+        >
+          <View style={{ backgroundColor: '#E31C79', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 }}>
+            <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 12 }}>CAJA</Text>
+          </View>
+        </View>
+
+        {/* Help Desk (Servicio al Cliente) - image asset */}
+        <Image
+          source={require('../../../assets/images/Servicio-1.png')}
+          style={{
+            position: 'absolute',
+            left: STATIONS.helpDesk.gridX * CELL_SIZE - CELL_SIZE * 0.5,
+            top: STATIONS.helpDesk.gridY * CELL_SIZE - CELL_SIZE * 0.7,
+            width: CELL_SIZE * 1.8,
+            height: CELL_SIZE * 1.8,
+          }}
+          resizeMode="contain"
+        />
+        {/* Atencion al Cliente label */}
+        <View
+          style={{
+            position: 'absolute',
+            left: STATIONS.helpDesk.gridX * CELL_SIZE - CELL_SIZE * 0.5,
+            top: STATIONS.helpDesk.gridY * CELL_SIZE + CELL_SIZE * 0.7,
+            width: CELL_SIZE * 1.8,
+            alignItems: 'center',
+          }}
+        >
+          <View style={{ backgroundColor: '#1a5f7a', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 }}>
+            <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 10 }}>ATENCIÓN AL CLIENTE</Text>
+          </View>
+        </View>
+
+        {/* ATM - image asset */}
+        <Image
+          source={require('../../../assets/images/ATM.png')}
+          style={{
+            position: 'absolute',
+            left: STATIONS.atm.gridX * CELL_SIZE - CELL_SIZE * 0.4,
+            top: STATIONS.atm.gridY * CELL_SIZE - CELL_SIZE * 0.65,
+            width: CELL_SIZE * 1.8,
+            height: CELL_SIZE * 1.8,
+          }}
+          resizeMode="contain"
+        />
+
+        {/* Waiting area sofas - image assets */}
+        <Image
+          source={require('../../../assets/images/sofa1.png')}
+          style={{
+            position: 'absolute',
+            left: 5 * CELL_SIZE - CELL_SIZE * 0.15,
+            top: (GRID_ROWS - 4) * CELL_SIZE - CELL_SIZE * 0.3,
+            width: CELL_SIZE * 1.3,
+            height: CELL_SIZE * 1.3,
+          }}
+          resizeMode="contain"
+        />
+        <Image
+          source={require('../../../assets/images/sofa2.png')}
+          style={{
+            position: 'absolute',
+            left: 5 * CELL_SIZE - CELL_SIZE * 0.15,
+            top: (GRID_ROWS - 2) * CELL_SIZE,
+            width: CELL_SIZE * 1.3,
+            height: CELL_SIZE * 1.3,
+          }}
+          resizeMode="contain"
+        />
+
+        {/* Left wall sofas - image assets */}
+        <Image
+          source={require('../../../assets/images/sofa2.png')}
+          style={{
+            position: 'absolute',
+            left: 0 * CELL_SIZE - CELL_SIZE * 0.15,
+            top: 7 * CELL_SIZE,
+            width: CELL_SIZE * 1.3,
+            height: CELL_SIZE * 1.3,
+          }}
+          resizeMode="contain"
+        />
+        <Image
+          source={require('../../../assets/images/sofa1.png')}
+          style={{
+            position: 'absolute',
+            left: 2 * CELL_SIZE - CELL_SIZE * 0.15,
+            top: 7 * CELL_SIZE,
+            width: CELL_SIZE * 1.3,
+            height: CELL_SIZE * 1.3,
+          }}
+          resizeMode="contain"
+        />
+
         {/* Clickable areas overlay */}
         {renderClickableAreas()}
 
         {/* Animated Player */}
         <Animated.View style={animatedPlayerStyle}>
-          <Svg width={CELL_SIZE * 0.8} height={CELL_SIZE}>
-            <DuoCharacter
-              x={CELL_SIZE * 0.4}
-              y={CELL_SIZE * 0.5}
-              size={CELL_SIZE * 0.7}
-              isPlayer={true}
-            />
-          </Svg>
+          <Image
+            source={
+              facingDirection === 'front'
+                ? require('../../../assets/images/Frente.png')
+                : facingDirection === 'back'
+                ? require('../../../assets/images/Atras.png')
+                : require('../../../assets/images/lado.png')
+            }
+            style={{
+              width: CELL_SIZE * 1.2,
+              height: CELL_SIZE * 1.2,
+              transform: facingDirection === 'right' ? [{ scaleX: -1 }] : [],
+            }}
+            resizeMode="contain"
+          />
         </Animated.View>
 
         {/* Animated target indicator */}
