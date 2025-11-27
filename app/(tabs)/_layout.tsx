@@ -25,15 +25,22 @@ export default function TabLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Roadmap',
+            title: 'Aprender',
             tabBarIcon: ({ color }) => <IconSymbol size={typography.title.fontSize} name="house.fill" color={color} />,
           }}
         />
         <Tabs.Screen
-          name="explore"
+          name="streak"
           options={{
-            title: 'Estadísticas',
-            tabBarIcon: ({ color }) => <IconSymbol size={typography.title.fontSize} name="chart.bar.fill" color={color} />,
+            title: 'Racha',
+            tabBarIcon: ({ color }) => <IconSymbol size={typography.title.fontSize} name="flame.fill" color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="rewards"
+          options={{
+            title: 'Premios',
+            tabBarIcon: ({ color }) => <IconSymbol size={typography.title.fontSize} name="gift.fill" color={color} />,
           }}
         />
         <Tabs.Screen
@@ -41,6 +48,12 @@ export default function TabLayout() {
           options={{
             title: 'Perfil',
             tabBarIcon: ({ color }) => <IconSymbol size={typography.title.fontSize} name="person.fill" color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="explore"
+          options={{
+            href: null, // Hide from tabs
           }}
         />
       </Tabs>

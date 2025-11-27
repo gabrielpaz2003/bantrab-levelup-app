@@ -1184,14 +1184,14 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
         <View
           style={{
             position: 'absolute',
-            left: STATIONS.helpDesk.gridX * CELL_SIZE - CELL_SIZE * 0.5,
+            left: STATIONS.helpDesk.gridX * CELL_SIZE - CELL_SIZE * 0.4,
             top: STATIONS.helpDesk.gridY * CELL_SIZE + CELL_SIZE * 0.7,
             width: CELL_SIZE * 1.8,
             alignItems: 'center',
           }}
         >
           <View style={{ backgroundColor: '#1a5f7a', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 }}>
-            <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 10 }}>ATENCIÓN AL CLIENTE</Text>
+            <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 10, textAlign: 'center' }}>ATENCIÓN AL CLIENTE</Text>
           </View>
         </View>
 

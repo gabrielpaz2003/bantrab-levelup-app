@@ -1,14 +1,28 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { colors, radii, spacing } from '@/constants/theme';
 import { StarIcon } from '@/src/assets/icons';
+import { useUserProgress } from '@/src/context/UserProgressContext';
 
 const GameOverScreen = () => {
-  const { score } = useLocalSearchParams<{ score: string }>();
+  const { score, nodeId } = useLocalSearchParams<{ score: string; nodeId: string }>();
   const router = useRouter();
+  const { addPoints, markNodeCompleted, recordActivity } = useUserProgress();
+
+  useEffect(() => {
+    // Add points, mark node as completed, and record activity for streak
+    if (score) {
+      addPoints(parseInt(score, 10));
+    }
+    if (nodeId) {
+      markNodeCompleted(nodeId);
+    }
+    recordActivity();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -51,7 +65,7 @@ const styles = StyleSheet.create({
   },
   scoreLabel: {
     fontSize: 24,
-    color: colors.text,
+    color: colors.white,
     marginBottom: spacing.lg - 4,
   },
   score: {
@@ -60,6 +74,7 @@ const styles = StyleSheet.create({
   },
   scoreText: {
     fontSize: 64,
+    lineHeight: 80,
     fontWeight: 'bold',
     color: colors.accentYellow,
     marginLeft: spacing.lg - 4,

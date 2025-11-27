@@ -1,6 +1,6 @@
 import { colors, radii, spacing } from '@/constants/theme';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, ImageSourcePropType } from 'react-native';
 import { RoadmapNode as RoadmapNodeType } from '../../types';
 import { CheckIcon } from './CheckIcon';
 import { LockIcon } from './LockIcon';
@@ -30,6 +30,12 @@ const RoadmapNode: React.FC<RoadmapNodeProps> = ({ node, onPress, activeColor })
       <View style={styles.iconContainer}>
         {typeof node.icon === 'string' ? (
           <Text style={styles.icon}>{node.icon || '⭐'}</Text>
+        ) : typeof node.icon === 'number' || (node.icon && typeof node.icon === 'object' && 'uri' in (node.icon as any)) ? (
+          <Image
+            source={node.icon as ImageSourcePropType}
+            style={[styles.iconImage, node.status === 'locked' && styles.iconImageLocked]}
+            resizeMode="contain"
+          />
         ) : (
           React.cloneElement(node.icon as React.ReactElement, {
             color: node.status === 'locked' ? colors.graySoft : colors.white,
@@ -65,13 +71,11 @@ const RoadmapNode: React.FC<RoadmapNodeProps> = ({ node, onPress, activeColor })
 
 const styles = StyleSheet.create({
   container: {
-    width: 120,
-    height: 120,
-    borderRadius: 30,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: spacing.lg,
-    marginHorizontal: spacing.lg + 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.2,
@@ -87,10 +91,17 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   iconContainer: {
-    marginBottom: spacing.sm,
+    marginBottom: 2,
   },
   icon: {
     fontSize: 40,
+  },
+  iconImage: {
+    width: 50,
+    height: 50,
+  },
+  iconImageLocked: {
+    opacity: 0.5,
   },
   title: {
     fontSize: 14,
@@ -118,17 +129,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(161, 171, 180, 0.3)',
-    borderRadius: 30,
+    borderRadius: 50,
   },
   pointsBadge: {
     position: 'absolute',
-    bottom: -10,
+    bottom: -20,
     backgroundColor: colors.accentYellow,
     paddingHorizontal: spacing.sm + 2,
     paddingVertical: spacing.xs,
     borderRadius: radii.full,
     borderWidth: 2,
     borderColor: colors.white,
+    zIndex: 10,
+    elevation: 15,
   },
   pointsText: {
     color: colors.text,
