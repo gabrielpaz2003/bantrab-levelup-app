@@ -1025,9 +1025,9 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
   const indicatorPosition = getIndicatorPosition();
 
   // Debug logging
-  console.log('Frame dimensions:', { FRAME_WIDTH, FRAME_HEIGHT });
-  console.log('Map dimensions:', { MAP_WIDTH, MAP_HEIGHT });
-  console.log('Grid:', { GRID_COLS, GRID_ROWS, CELL_SIZE });
+  // console.log('Frame dimensions:', { FRAME_WIDTH, FRAME_HEIGHT });
+  // console.log('Map dimensions:', { MAP_WIDTH, MAP_HEIGHT });
+  // console.log('Grid:', { GRID_COLS, GRID_ROWS, CELL_SIZE });
 
   return (
     <ThemedView style={styles.container}>

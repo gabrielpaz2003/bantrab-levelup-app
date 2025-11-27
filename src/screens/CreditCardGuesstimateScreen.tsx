@@ -1,11 +1,11 @@
 
-import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
+import { colors, radii, spacing, typography } from '@/constants/theme';
+import { CreditCard, mockCreditCardData } from '@/src/data/mockCreditCardData';
+import { Item, mockItemData } from '@/src/data/mockItemData';
 import Slider from '@react-native-community/slider';
-import { colors, spacing, typography, radii } from '@/constants/theme';
-import { mockCreditCardData, CreditCard } from '@/src/data/mockCreditCardData';
-import { mockItemData, Item } from '@/src/data/mockItemData';
+import { useRouter } from 'expo-router';
+import React, { useMemo, useState } from 'react';
+import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const MINIMUM_PAYMENT_PERCENTAGE = 0.02; // 2%
 

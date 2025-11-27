@@ -1,20 +1,19 @@
+import { colors, radii, spacing, typography } from '@/constants/theme';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  StatusBar,
   Alert,
   Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
 } from 'react-native';
+import { PathLine, RoadmapNode } from '../components/roadmap';
 import { Dropdown } from '../components/ui/Dropdown';
-import { RoadmapNode, PathLine } from '../components/roadmap';
 import { mockRoadmapData, mockUserProgress } from '../data/mockRoadmapData';
-import { RoadmapNode as RoadmapNodeType, RoadmapModule } from '../types';
-import { router } from 'expo-router';
-import { colors, spacing, typography, radii } from '@/constants/theme';
+import { RoadmapModule, RoadmapNode as RoadmapNodeType } from '../types';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -85,8 +84,6 @@ const RoadmapScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
-
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Your Learning Path</Text>
         <View style={styles.progressContainer}>
