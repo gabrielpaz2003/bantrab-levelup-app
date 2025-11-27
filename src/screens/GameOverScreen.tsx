@@ -1,14 +1,28 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
-import { colors } from '@/constants/theme';
+import { colors, radii, spacing } from '@/constants/theme';
 import { StarIcon } from '@/src/assets/icons';
+import { useUserProgress } from '@/src/context/UserProgressContext';
 
 const GameOverScreen = () => {
-  const { score } = useLocalSearchParams<{ score: string }>();
+  const { score, nodeId } = useLocalSearchParams<{ score: string; nodeId: string }>();
   const router = useRouter();
+  const { addPoints, markNodeCompleted, recordActivity } = useUserProgress();
+
+  useEffect(() => {
+    // Add points, mark node as completed, and record activity for streak
+    if (score) {
+      addPoints(parseInt(score, 10));
+    }
+    if (nodeId) {
+      markNodeCompleted(nodeId);
+    }
+    recordActivity();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -43,16 +57,16 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     color: colors.primary,
-    marginBottom: 40,
+    marginBottom: spacing.xl + 8,
   },
   scoreContainer: {
     alignItems: 'center',
-    marginBottom: 60,
+    marginBottom: spacing.xl + 28,
   },
   scoreLabel: {
     fontSize: 24,
-    color: colors.text,
-    marginBottom: 20,
+    color: colors.white,
+    marginBottom: spacing.lg - 4,
   },
   score: {
     flexDirection: 'row',
@@ -60,15 +74,16 @@ const styles = StyleSheet.create({
   },
   scoreText: {
     fontSize: 64,
+    lineHeight: 80,
     fontWeight: 'bold',
     color: colors.accentYellow,
-    marginLeft: 20,
+    marginLeft: spacing.lg - 4,
   },
   button: {
     backgroundColor: colors.primary,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 999,
+    paddingVertical: spacing.md - 1,
+    paddingHorizontal: spacing.xl + 8,
+    borderRadius: radii.full,
   },
   buttonText: {
     color: colors.white,

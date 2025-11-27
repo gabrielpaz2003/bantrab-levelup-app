@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Image,
+  ImageSourcePropType,
 } from 'react-native';
 import Animated, { FadeIn, FadeInRight } from 'react-native-reanimated';
 import { colors, spacing, radii } from '@/constants/theme';
@@ -18,6 +20,7 @@ interface CarouselCard {
   title?: string;
   content: string;
   icon?: string;
+  image?: ImageSourcePropType;
 }
 
 interface ContentCarouselScreenProps {
@@ -80,7 +83,8 @@ const ContentCarouselScreen: React.FC<ContentCarouselScreenProps> = ({
             style={styles.card}
             entering={FadeInRight.delay(400 + index * 100)}
           >
-            {card.icon && <Text style={styles.cardIcon}>{card.icon}</Text>}
+            {card.image && <Image source={card.image} style={styles.cardImage} resizeMode="contain" />}
+            {card.icon && !card.image && <Text style={styles.cardIcon}>{card.icon}</Text>}
             {card.title && <Text style={styles.cardTitle}>{card.title}</Text>}
             <Text style={styles.cardContent}>{card.content}</Text>
           </Animated.View>
@@ -172,6 +176,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 4,
     minHeight: 150,
+  },
+  cardImage: {
+    width: '100%',
+    height: 120,
+    marginBottom: spacing.sm,
   },
   cardIcon: {
     fontSize: 32,

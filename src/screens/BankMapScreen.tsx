@@ -9,21 +9,20 @@ import { StarIcon } from '@/src/assets/icons';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
+const NODE_POINTS = 90; // Points assigned in roadmap for "Minijuegos" node
+const NODE_ID = 'cc-node-3'; // Node ID from roadmap
+
 const BankMapScreen = () => {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [score, setScore] = useState(0);
 
-  const handleComplete = (points = 10) => {
-    const newScore = score + points;
-    setScore(newScore);
-
+  const handleComplete = () => {
     if (currentIndex < mockBankMapExercises.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
       router.replace({
         pathname: '/game-over',
-        params: { score: newScore.toString() },
+        params: { score: NODE_POINTS.toString(), nodeId: NODE_ID },
       });
     }
   };
@@ -36,7 +35,7 @@ const BankMapScreen = () => {
       <View style={styles.header}>
         <View style={styles.scoreContainer}>
           <StarIcon size={24} color={colors.accentYellow} fill={colors.accentYellow} />
-          <ThemedText style={styles.scoreText}>{score}</ThemedText>
+          <ThemedText style={styles.scoreText}>+{NODE_POINTS} XP</ThemedText>
         </View>
         <View style={styles.progressContainer}>
           <ThemedText style={styles.progressText}>

@@ -7,21 +7,19 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { StarIcon } from '@/src/assets/icons';
 
 import {
-  ContentChatScreen,
   ContentCarouselScreen,
-  ContentTimelineScreen,
   ContentToggleScreen,
   ContentComparisonScreen,
   ContentTipsScreen,
 } from '@/src/components/content';
 
-import { creditCardModuleContent } from '@/src/data/mockCreditCardModuleContent';
+import { bantrabProductsContent } from '@/src/data/mockBantrabProductsContent';
 
-const TOTAL_SCREENS = 6;
-const NODE_POINTS = 80; // Points assigned in roadmap for "Contenido" node
-const NODE_ID = 'cc-node-1'; // Node ID from roadmap
+const TOTAL_SCREENS = 5;
+const NODE_POINTS = 100; // Points assigned in roadmap for "Productos Bantrab" node
+const NODE_ID = 'cc-node-4'; // Node ID from roadmap
 
-const CreditCardContentScreen = () => {
+const BantrabProductsScreen = () => {
   const router = useRouter();
   const [currentScreen, setCurrentScreen] = useState(1);
 
@@ -29,7 +27,6 @@ const CreditCardContentScreen = () => {
     if (currentScreen < TOTAL_SCREENS) {
       setCurrentScreen(currentScreen + 1);
     } else {
-      // Module completed - navigate to game over with node points
       router.replace({
         pathname: '/game-over',
         params: { score: NODE_POINTS.toString(), nodeId: NODE_ID },
@@ -41,68 +38,57 @@ const CreditCardContentScreen = () => {
     switch (currentScreen) {
       case 1:
         return (
-          <ContentChatScreen
-            title={creditCardModuleContent.screen1.title}
-            messages={creditCardModuleContent.screen1.messages}
-            keyPoint={creditCardModuleContent.screen1.keyPoint}
-            buttonText={creditCardModuleContent.screen1.buttonText}
-            interaction={creditCardModuleContent.screen1.interaction}
+          <ContentCarouselScreen
+            title={bantrabProductsContent.screen1.title}
+            illustration={bantrabProductsContent.screen1.illustration}
+            cards={bantrabProductsContent.screen1.cards}
+            keyPoint={bantrabProductsContent.screen1.keyPoint}
+            buttonText={bantrabProductsContent.screen1.buttonText}
             onContinue={handleContinue}
           />
         );
 
       case 2:
         return (
-          <ContentCarouselScreen
-            title={creditCardModuleContent.screen2.title}
-            illustration={creditCardModuleContent.screen2.illustration}
-            cards={creditCardModuleContent.screen2.cards}
-            keyPoint={creditCardModuleContent.screen2.keyPoint}
-            buttonText={creditCardModuleContent.screen2.buttonText}
+          <ContentComparisonScreen
+            title={bantrabProductsContent.screen2.title}
+            items={bantrabProductsContent.screen2.items}
+            sliderConfig={bantrabProductsContent.screen2.sliderConfig}
+            buttonText={bantrabProductsContent.screen2.buttonText}
             onContinue={handleContinue}
           />
         );
 
       case 3:
         return (
-          <ContentTimelineScreen
-            title={creditCardModuleContent.screen3.title}
-            timelinePoints={creditCardModuleContent.screen3.timelinePoints}
-            example={creditCardModuleContent.screen3.example}
-            buttonText={creditCardModuleContent.screen3.buttonText}
+          <ContentToggleScreen
+            title={bantrabProductsContent.screen3.title}
+            description={bantrabProductsContent.screen3.description}
+            options={bantrabProductsContent.screen3.options}
+            buttonText={bantrabProductsContent.screen3.buttonText}
             onContinue={handleContinue}
           />
         );
 
       case 4:
         return (
-          <ContentToggleScreen
-            title={creditCardModuleContent.screen4.title}
-            description={creditCardModuleContent.screen4.description}
-            options={creditCardModuleContent.screen4.options}
-            buttonText={creditCardModuleContent.screen4.buttonText}
+          <ContentTipsScreen
+            title={bantrabProductsContent.screen4.title}
+            warningCards={bantrabProductsContent.screen4.warningCards}
+            tipCards={bantrabProductsContent.screen4.tipCards}
+            buttonText={bantrabProductsContent.screen4.buttonText}
             onContinue={handleContinue}
           />
         );
 
       case 5:
         return (
-          <ContentComparisonScreen
-            title={creditCardModuleContent.screen5.title}
-            items={creditCardModuleContent.screen5.items}
-            sliderConfig={creditCardModuleContent.screen5.sliderConfig}
-            buttonText={creditCardModuleContent.screen5.buttonText}
-            onContinue={handleContinue}
-          />
-        );
-
-      case 6:
-        return (
-          <ContentTipsScreen
-            title={creditCardModuleContent.screen6.title}
-            warningCards={creditCardModuleContent.screen6.warningCards}
-            tipCards={creditCardModuleContent.screen6.tipCards}
-            buttonText={creditCardModuleContent.screen6.buttonText}
+          <ContentCarouselScreen
+            title={bantrabProductsContent.screen5.title}
+            illustration={bantrabProductsContent.screen5.illustration}
+            cards={bantrabProductsContent.screen5.cards}
+            keyPoint={bantrabProductsContent.screen5.keyPoint}
+            buttonText={bantrabProductsContent.screen5.buttonText}
             onContinue={handleContinue}
           />
         );
@@ -204,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreditCardContentScreen;
+export default BantrabProductsScreen;

@@ -1,51 +1,86 @@
+import { colors, radii, spacing, typography } from '@/constants/theme';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  StatusBar,
   Alert,
   Dimensions,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
+import { CurvedPath, RoadmapNode } from '../components/roadmap';
 import { Dropdown } from '../components/ui/Dropdown';
-import { RoadmapNode, PathLine } from '../components/roadmap';
-import { mockRoadmapData, mockUserProgress } from '../data/mockRoadmapData';
-import { RoadmapNode as RoadmapNodeType, RoadmapModule } from '../types';
-import { router } from 'expo-router';
+import { mockRoadmapData } from '../data/mockRoadmapData';
+import { RoadmapModule, RoadmapNode as RoadmapNodeType } from '../types';
+import { useUserProgress } from '../context/UserProgressContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
+// These constants must match CurvedPath positioning
+const NODE_SIZE = 100;
+const SIDE_PADDING = 50;
+const PATH_HEIGHT = 100;
+
 const RoadmapScreen: React.FC = () => {
-  const [userProgress] = useState(mockUserProgress);
+  const { totalPoints, completedNodes } = useUserProgress();
   const [activeModule, setActiveModule] = useState<RoadmapModule>(
     mockRoadmapData[0]
   );
 
   const handleNodePress = (node: RoadmapNodeType) => {
+    // Only credit-cards module is functional
+    if (node.moduleId !== 'credit-cards') {
+      Alert.alert(
+        'Próximamente',
+        'Este módulo estará disponible pronto.',
+        [{ text: 'OK' }]
+      );
+      return;
+    }
+
     if (node.title === 'Contenido') {
-      // Navigate to content module (chat-like presentation)
       router.push('/credit-card-content');
       return;
     } else if (node.title === 'Ejercicios') {
-      // Navigate to exercises screen
       router.push('/exercises');
       return;
     } else if (node.title === 'Minijuegos') {
-      // Navigate to bank map minigame
       router.push('/bank-map-minigame');
+      return;
+    } else if (node.title === 'Productos Bantrab') {
+      router.push('/bantrab-products');
       return;
     } else {
       Alert.alert(
         node.title,
-        node.description || 'Continue your learning journey!',
+        node.description || '¡Continúa tu camino de aprendizaje!',
         [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Start', onPress: () => console.log('Starting:', node.id) },
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Iniciar', onPress: () => console.log('Starting:', node.id) },
         ]
       );
       return;
+    }
+  };
+
+  const getPathDirection = (
+    currentNode: RoadmapNodeType,
+    nextNode: RoadmapNodeType
+  ): 'left-to-right' | 'right-to-left' | 'straight-left' | 'straight-right' => {
+    const currentX = currentNode.position.x;
+    const nextX = nextNode.position.x;
+
+    if (currentX === 0 && nextX === 1) {
+      return 'left-to-right';
+    } else if (currentX === 1 && nextX === 0) {
+      return 'right-to-left';
+    } else if (currentX === 0) {
+      return 'straight-left';
+    } else {
+      return 'straight-right';
     }
   };
 
@@ -56,10 +91,27 @@ const RoadmapScreen: React.FC = () => {
   ) => {
     const isLastNode = index === totalNodes - 1;
     const shouldShowPath = !isLastNode;
-    const isPathCompleted = userProgress.completedNodes.includes(node.id);
+    const isPathCompleted = completedNodes.includes(node.id);
+    const nextNode = !isLastNode ? activeModule.nodes[index + 1] : null;
+    const previousNode = index > 0 ? activeModule.nodes[index - 1] : null;
+
+    // Determine node status dynamically - only update to completed if in completedNodes
+    const nodeWithStatus = {
+      ...node,
+      status: completedNodes.includes(node.id) ? 'completed' as const : node.status,
+    };
 
     return (
       <View key={node.id} style={styles.nodeWrapper}>
+        {shouldShowPath && nextNode && (
+          <View style={styles.pathContainer}>
+            <CurvedPath
+              isCompleted={isPathCompleted}
+              color={activeModule.color || colors.primary}
+              direction={getPathDirection(node, nextNode)}
+            />
+          </View>
+        )}
         <View
           style={[
             styles.nodeContainer,
@@ -67,30 +119,29 @@ const RoadmapScreen: React.FC = () => {
           ]}
         >
           <RoadmapNode
-            node={node}
+            node={nodeWithStatus}
             onPress={handleNodePress}
-            activeColor={activeModule.color || '#1CB0F6'}
+            activeColor={activeModule.color || colors.primary}
           />
         </View>
-        {shouldShowPath && (
-          <PathLine
-            isCompleted={isPathCompleted}
-            color={activeModule.color || '#1CB0F6'}
-          />
-        )}
       </View>
     );
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
-
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Your Learning Path</Text>
+        <View style={styles.headerTitleContainer}>
+          <Image
+            source={require('../../assets/images/lu.png')}
+            style={styles.headerLogo}
+            resizeMode="contain"
+          />
+          <Text style={styles.headerTitle}>Bantrab Level-Up</Text>
+        </View>
         <View style={styles.progressContainer}>
           <Text style={styles.progressText}>
-            {userProgress.totalPoints} XP
+            {totalPoints} XP
           </Text>
         </View>
       </View>
@@ -107,8 +158,7 @@ const RoadmapScreen: React.FC = () => {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         {activeModule && (
           <View key={activeModule.id} style={styles.levelSection}>
             <View style={styles.nodesContainer}>
@@ -119,9 +169,6 @@ const RoadmapScreen: React.FC = () => {
           </View>
         )}
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Keep going! 🎉</Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -130,49 +177,57 @@ const RoadmapScreen: React.FC = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F0F4F8',
+    backgroundColor: colors.background,
   },
   header: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    backgroundColor: colors.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: colors.graySoft,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerLogo: {
+    width: 32,
+    height: 32,
+    marginRight: spacing.sm,
+  },
   headerTitle: {
-    fontSize: 24,
+    ...typography.title,
     fontWeight: 'bold',
-    color: '#333',
   },
   progressContainer: {
-    backgroundColor: '#FFC107',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
+    backgroundColor: colors.accentYellow,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm - 2,
+    borderRadius: radii.md,
   },
   progressText: {
-    fontSize: 14,
+    ...typography.body,
     fontWeight: 'bold',
-    color: '#333',
+    color: colors.text,
   },
   moduleSelector: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-    padding: 15,
+    borderBottomColor: colors.graySoft,
+    padding: spacing.md - 1,
     alignItems: 'center',
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    paddingVertical: 20,
+    paddingVertical: spacing.lg,
   },
   levelSection: {
-    marginBottom: 20,
+    marginBottom: spacing.lg,
   },
   nodesContainer: {
     alignItems: 'center',
@@ -180,26 +235,34 @@ const styles = StyleSheet.create({
   nodeWrapper: {
     width: '100%',
     alignItems: 'center',
+    marginBottom: PATH_HEIGHT,
+  },
+  pathContainer: {
+    position: 'absolute',
+    top: NODE_SIZE,
+    left: 0,
+    right: 0,
+    zIndex: 0,
   },
   nodeContainer: {
     width: SCREEN_WIDTH,
+    zIndex: 1,
   },
   alignLeft: {
     alignItems: 'flex-start',
-    paddingLeft: 60,
+    paddingLeft: SIDE_PADDING,
   },
   alignRight: {
     alignItems: 'flex-end',
-    paddingRight: 60,
+    paddingRight: SIDE_PADDING,
   },
   footer: {
     paddingVertical: 40,
     alignItems: 'center',
   },
   footerText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#A0A0A0',
+    ...typography.subtitle,
+    color: colors.graySoft,
   },
 });
 

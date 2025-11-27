@@ -1,28 +1,26 @@
 import { RoadmapModule, UserProgress } from '../types';
-import {
-  CreditCardIcon,
-  CheckingAccountIcon,
-  BookIcon,
-  DumbbellIcon,
-  GameControllerIcon,
-} from '@/src/assets/icons';
-import React from 'react';
+
+// Import image assets for roadmap icons
+const bookIcon = require('../../assets/images/book.png');
+const dumbbellIcon = require('../../assets/images/dumbell.png');
+const beeIcon = require('../../assets/images/abeja13.png');
+const storeIcon = require('../../assets/images/store.png');
 
 export const mockRoadmapData: RoadmapModule[] = [
   {
     id: 'credit-cards',
-    title: 'Credit Cards',
+    title: 'Tarjetas de Crédito',
     color: '#1CB0F6',
     nodes: [
       {
         id: 'cc-node-1',
         title: 'Contenido',
         description: 'Aprende los conceptos básicos.',
-        status: 'completed',
+        status: 'available',
         position: { x: 0, y: 0 },
         moduleId: 'credit-cards',
-        icon: React.createElement(BookIcon, { color: '#1CB0F6', size: 32 }),
-        points: 10,
+        icon: bookIcon,
+        points: 80,
         connectedTo: ['cc-node-2'],
       },
       {
@@ -32,8 +30,8 @@ export const mockRoadmapData: RoadmapModule[] = [
         status: 'in_progress',
         position: { x: 1, y: 1 },
         moduleId: 'credit-cards',
-        icon: React.createElement(DumbbellIcon, { color: '#1CB0F6', size: 32 }),
-        points: 15,
+        icon: dumbbellIcon,
+        points: 85,
         connectedTo: ['cc-node-3'],
       },
       {
@@ -43,70 +41,70 @@ export const mockRoadmapData: RoadmapModule[] = [
         status: 'available',
         position: { x: 0, y: 2 },
         moduleId: 'credit-cards',
-        icon: React.createElement(GameControllerIcon, { color: '#1CB0F6', size: 32 }),
-        points: 20,
+        icon: beeIcon,
+        points: 90,
         connectedTo: ['cc-node-4'],
       },
       {
         id: 'cc-node-4',
         title: 'Productos Bantrab',
         description: 'Descubre los productos que Bantrab tiene para ti.',
-        status: 'locked',
+        status: 'available',
         position: { x: 1, y: 3 },
         moduleId: 'credit-cards',
-        icon: React.createElement(CreditCardIcon, { color: '#1CB0F6', size: 32 }),
-        points: 25,
+        icon: storeIcon,
+        points: 100,
         connectedTo: [],
       },
     ],
   },
   {
     id: 'checking-account',
-    title: 'Checking Account',
+    title: 'Cuenta de Cheques',
     color: '#58CC02',
     nodes: [
       {
         id: 'ca-node-1',
         title: 'Contenido',
         description: 'Aprende los conceptos básicos.',
-        status: 'completed',
+        status: 'available',
         position: { x: 0, y: 0 },
         moduleId: 'checking-account',
-        icon: React.createElement(BookIcon, { color: '#58CC02', size: 32 }),
-        points: 10,
+        icon: bookIcon,
+        points: 80,
         connectedTo: ['ca-node-2'],
       },
       {
         id: 'ca-node-2',
         title: 'Ejercicios',
         description: 'Pon a prueba tus conocimientos.',
-        status: 'completed',
+        status: 'locked',
         position: { x: 1, y: 1 },
         moduleId: 'checking-account',
-        icon: React.createElement(DumbbellIcon, { color: '#58CC02', size: 32 }),
-        points: 15,
+        icon: dumbbellIcon,
+        points: 85,
         connectedTo: ['ca-node-3'],
       },
       {
         id: 'ca-node-3',
         title: 'Minijuegos',
         description: 'Aprende jugando.',
-        status: 'in_progress',
+        status: 'locked',
         position: { x: 0, y: 2 },
         moduleId: 'checking-account',
-        icon: React.createElement(GameControllerIcon, { color: '#58CC02', size: 32 }),
-        points: 20,
+        icon: beeIcon,
+        points: 90,
         connectedTo: ['ca-node-4'],
       },
       {
         id: 'ca-node-4',
         title: 'Productos Bantrab',
         description: 'Descubre los productos que Bantrab tiene para ti.',
-        status: 'available',
+        status: 'locked',
         position: { x: 1, y: 3 },
         moduleId: 'checking-account',
-        icon: React.createElement(CheckingAccountIcon, { color: '#58CC02', size: 32 }),
-        points: 25,
+        icon: storeIcon,
+        points: 100,
         connectedTo: [],
       },
     ],
@@ -114,7 +112,7 @@ export const mockRoadmapData: RoadmapModule[] = [
 ];
 
 export const mockUserProgress: UserProgress = {
-  completedNodes: ['cc-node-1', 'ca-node-1', 'ca-node-2'],
-  currentNode: 'ca-node-3',
-  totalPoints: 35,
+  completedNodes: [],
+  currentNode: 'cc-node-1',
+  totalPoints: 0,
 };

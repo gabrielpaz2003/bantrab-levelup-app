@@ -111,25 +111,29 @@ const ContentTipsScreen: React.FC<ContentTipsScreenProps> = ({
         <Text style={styles.title}>{title}</Text>
       </Animated.View>
 
-      <Animated.View style={styles.section} entering={FadeInUp.delay(300)}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionIcon}>⚠️</Text>
-          <Text style={styles.sectionTitle}>Errores comunes</Text>
-        </View>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.cardsRow}
-        >
-          {warningCards.map((card, index) => renderCard(card, index))}
-        </ScrollView>
-      </Animated.View>
+      {warningCards.length > 0 && (
+        <Animated.View style={styles.section} entering={FadeInUp.delay(300)}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionIcon}>⚠️</Text>
+            <Text style={styles.sectionTitle}>Errores comunes</Text>
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.cardsRow}
+          >
+            {warningCards.map((card, index) => renderCard(card, index))}
+          </ScrollView>
+        </Animated.View>
+      )}
 
       <Animated.View style={styles.section} entering={FadeInUp.delay(500)}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionIcon}>✅</Text>
-          <Text style={styles.sectionTitle}>Buenas practicas</Text>
-        </View>
+        {warningCards.length > 0 && (
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionIcon}>✅</Text>
+            <Text style={styles.sectionTitle}>Buenas practicas</Text>
+          </View>
+        )}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}

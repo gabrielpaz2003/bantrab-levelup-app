@@ -1,20 +1,18 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity, Text, Image } from 'react-native';
-import Svg, { Rect, Path, G, Circle, Ellipse, Defs, LinearGradient, Stop, RadialGradient, Text as SvgText } from 'react-native-svg';
+import { ThemedView } from '@/components/themed-view';
+import { colors } from '@/constants/theme';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withSequence,
-  withRepeat,
-  withDelay,
+  cancelAnimation,
   Easing,
   runOnJS,
-  cancelAnimation,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming
 } from 'react-native-reanimated';
-import { ThemedView } from '@/components/themed-view';
-import { ThemedText } from '@/components/themed-text';
-import { colors } from '@/constants/theme';
+import Svg, { Circle, Defs, Ellipse, G, LinearGradient, Path, RadialGradient, Rect, Stop, Text as SvgText } from 'react-native-svg';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const MAP_PADDING = 5;
@@ -1027,9 +1025,9 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
   const indicatorPosition = getIndicatorPosition();
 
   // Debug logging
-  console.log('Frame dimensions:', { FRAME_WIDTH, FRAME_HEIGHT });
-  console.log('Map dimensions:', { MAP_WIDTH, MAP_HEIGHT });
-  console.log('Grid:', { GRID_COLS, GRID_ROWS, CELL_SIZE });
+  // console.log('Frame dimensions:', { FRAME_WIDTH, FRAME_HEIGHT });
+  // console.log('Map dimensions:', { MAP_WIDTH, MAP_HEIGHT });
+  // console.log('Grid:', { GRID_COLS, GRID_ROWS, CELL_SIZE });
 
   return (
     <ThemedView style={styles.container}>
@@ -1186,20 +1184,20 @@ const BankMapGame: React.FC<BankMapGameProps> = ({ exercise, onComplete }) => {
         <View
           style={{
             position: 'absolute',
-            left: STATIONS.helpDesk.gridX * CELL_SIZE - CELL_SIZE * 0.5,
+            left: STATIONS.helpDesk.gridX * CELL_SIZE - CELL_SIZE * 0.4,
             top: STATIONS.helpDesk.gridY * CELL_SIZE + CELL_SIZE * 0.7,
             width: CELL_SIZE * 1.8,
             alignItems: 'center',
           }}
         >
           <View style={{ backgroundColor: '#1a5f7a', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 }}>
-            <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 10 }}>ATENCIÓN AL CLIENTE</Text>
+            <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 10, textAlign: 'center' }}>ATENCIÓN AL CLIENTE</Text>
           </View>
         </View>
 
         {/* ATM - image asset */}
         <Image
-          source={require('../../../assets/images/ATM.png')}
+          source={require('../../../assets/images/atm.png')}
           style={{
             position: 'absolute',
             left: STATIONS.atm.gridX * CELL_SIZE - CELL_SIZE * 0.4,

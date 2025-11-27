@@ -13,21 +13,21 @@ import { StarIcon } from '@/src/assets/icons';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
+const NODE_POINTS = 85; // Points assigned in roadmap for "Ejercicios" node
+const NODE_ID = 'cc-node-2'; // Node ID from roadmap
+
 const ExerciseScreen = () => {
   const router = useRouter();
   const [sequence, setSequence] = useState(mockCreditExercises);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [score, setScore] = useState(0);
 
-  const handleComplete = (points = 10) => {
-    const newScore = score + points;
-    setScore(newScore);
+  const handleComplete = () => {
     if (currentIndex < sequence.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
       router.replace({
         pathname: '/game-over',
-        params: { score: newScore.toString() },
+        params: { score: NODE_POINTS.toString(), nodeId: NODE_ID },
       });
     }
   };
@@ -56,7 +56,7 @@ const ExerciseScreen = () => {
       <View style={styles.header}>
         <View style={styles.scoreContainer}>
           <StarIcon size={24} color={colors.accentYellow} fill={colors.accentYellow} />
-          <ThemedText style={styles.scoreText}>{score}</ThemedText>
+          <ThemedText style={styles.scoreText}>+{NODE_POINTS} XP</ThemedText>
         </View>
         <TouchableOpacity onPress={() => router.back()}>
           <IconSymbol name="xmark.circle.fill" size={28} color={colors.white} />
