@@ -24,7 +24,7 @@ const GuesstimateSlider = ({ exercise, onComplete }) => {
       <ThemedText type="title" style={styles.title}>{exercise.title}</ThemedText>
       <ThemedText style={styles.statement}>{exercise.statement}</ThemedText>
       <View style={styles.sliderContainer}>
-        <ThemedText style={styles.sliderLabel}>Your Guess: Q{guess.toFixed(2)}</ThemedText>
+        <ThemedText style={styles.sliderLabel}>Estimado: Q{guess.toFixed(2)}</ThemedText>
         <Slider
           style={{ width: '100%', height: 40 }}
           minimumValue={exercise.min}
@@ -37,7 +37,7 @@ const GuesstimateSlider = ({ exercise, onComplete }) => {
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={handleGuess} disabled={showFeedback}>
-        <Text style={styles.buttonText}>Guess</Text>
+        <Text style={styles.buttonText}>Adivinar</Text>
       </TouchableOpacity>
       {showFeedback && (
         <View style={styles.feedbackContainer}>
@@ -45,7 +45,7 @@ const GuesstimateSlider = ({ exercise, onComplete }) => {
             {isCorrect ? exercise.feedback.correct : exercise.feedback.incorrect}
           </ThemedText>
           <ThemedText style={styles.correctValueText}>
-            The real cost is around Q{exercise.correctValue.toFixed(2)}
+            El costo real es alrededor de Q{exercise.correctValue.toFixed(2)}
           </ThemedText>
         </View>
       )}

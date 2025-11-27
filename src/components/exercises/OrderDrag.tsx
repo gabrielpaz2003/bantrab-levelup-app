@@ -38,7 +38,7 @@ const OrderDrag = ({ exercise, onComplete }) => {
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={handleCheckOrder}>
-        <Text style={styles.buttonText}>Check Order</Text>
+        <Text style={styles.buttonText}>Revisar Orden</Text>
       </TouchableOpacity>
       {feedback && (
         <View style={styles.feedbackContainer}>

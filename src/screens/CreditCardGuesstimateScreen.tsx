@@ -83,26 +83,26 @@ const CreditCardGuesstimateScreen = ({ onComplete }: { onComplete?: () => void }
     if (percentageOff < 30) return { points: 25, message: "Not bad!" };
     return { points: 10, message: "Better luck next time!" };
   };
-  
+
   const score = getScore();
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
-            <Text style={styles.title}>The Real Cost</Text>
+          <Text style={styles.title}>The Real Cost</Text>
         </View>
 
         <View style={styles.itemContainer}>
-            <Text style={styles.emoji}>{item.emoji}</Text>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemPrice}>Price: ${item.price.toFixed(2)}</Text>
-            <Text style={styles.cardName}>on {card.name} ({card.interestRate}%)</Text>
+          <Text style={styles.emoji}>{item.emoji}</Text>
+          <Text style={styles.itemName}>{item.name}</Text>
+          <Text style={styles.itemPrice}>Price: ${item.price.toFixed(2)}</Text>
+          <Text style={styles.cardName}>on {card.name} ({card.interestRate}%)</Text>
         </View>
 
         <View style={styles.sliderContainer}>
-            <Text style={styles.sliderLabel}>Your Guess: ${guess.toFixed(2)}</Text>
-            <Slider
+          <Text style={styles.sliderLabel}>Estimado: ${guess.toFixed(2)}</Text>
+          <Slider
             style={{ width: '100%', height: 40 }}
             minimumValue={item.price}
             maximumValue={item.price * 2}
@@ -110,38 +110,38 @@ const CreditCardGuesstimateScreen = ({ onComplete }: { onComplete?: () => void }
             onValueChange={setGuess}
             minimumTrackTintColor={colors.primary}
             maximumTrackTintColor={colors.graySoft}
-            />
+          />
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handleGuess}>
-            <Text style={styles.buttonText}>Guess</Text>
+          <Text style={styles.buttonText}>Adivinar</Text>
         </TouchableOpacity>
       </ScrollView>
 
       <Modal visible={showResult} transparent animationType="fade">
         <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-                <Text style={styles.resultTitle}>{score.message}</Text>
-                <Text style={styles.resultText}>Real Cost: ${realCost.toFixed(2)}</Text>
-                <Text style={styles.resultText}>Your Guess: ${guess.toFixed(2)}</Text>
-                <Text style={styles.scoreText}>You earned {score.points} points!</Text>
-                
-                <View style={styles.comparisonContainer}>
-                    <Text style={styles.comparisonTitle}>How other cards compare:</Text>
-                    {otherCardsComparison.map(c => (
-                        <Text key={c.id} style={styles.comparisonText}>
-                            {c.name}: ${c.totalPaid.toFixed(2)}
-                        </Text>
-                    ))}
-                </View>
+          <View style={styles.modalContent}>
+            <Text style={styles.resultTitle}>{score.message}</Text>
+            <Text style={styles.resultText}>Real Cost: ${realCost.toFixed(2)}</Text>
+            <Text style={styles.resultText}>Your Guess: ${guess.toFixed(2)}</Text>
+            <Text style={styles.scoreText}>You earned {score.points} points!</Text>
 
-                <TouchableOpacity style={styles.modalButton} onPress={handleNext}>
-                    <Text style={styles.buttonText}>Next Item</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalButton} onPress={handleGoBack}>
-                    <Text style={styles.buttonText}>Go Back</Text>
-                </TouchableOpacity>
+            <View style={styles.comparisonContainer}>
+              <Text style={styles.comparisonTitle}>How other cards compare:</Text>
+              {otherCardsComparison.map(c => (
+                <Text key={c.id} style={styles.comparisonText}>
+                  {c.name}: ${c.totalPaid.toFixed(2)}
+                </Text>
+              ))}
             </View>
+
+            <TouchableOpacity style={styles.modalButton} onPress={handleNext}>
+              <Text style={styles.buttonText}>Next Item</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalButton} onPress={handleGoBack}>
+              <Text style={styles.buttonText}>Go Back</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>
@@ -149,117 +149,117 @@ const CreditCardGuesstimateScreen = ({ onComplete }: { onComplete?: () => void }
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.background,
-    },
-    scrollContainer: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: spacing.lg,
-    },
-    header: {
-        marginBottom: spacing.lg,
-    },
-    title: {
-        ...typography.title,
-        textAlign: 'center',
-    },
-    itemContainer: {
-        alignItems: 'center',
-        marginBottom: spacing.lg,
-    },
-    emoji: {
-        fontSize: 80,
-    },
-    itemName: {
-        ...typography.subtitle,
-        marginTop: spacing.md,
-    },
-    itemPrice: {
-        ...typography.body,
-        fontSize: 18,
-        color: colors.graySoft,
-    },
-    cardName: {
-        ...typography.body,
-        marginTop: spacing.sm,
-        fontStyle: 'italic',
-    },
-    sliderContainer: {
-        width: '100%',
-        marginBottom: spacing.lg,
-    },
-    sliderLabel: {
-        ...typography.body,
-        textAlign: 'center',
-        marginBottom: spacing.sm,
-    },
-    button: {
-        backgroundColor: colors.primary,
-        borderRadius: radii.full,
-        paddingVertical: spacing.md,
-        paddingHorizontal: spacing.xl,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonText: {
-        ...typography.body,
-        fontWeight: '600',
-        color: colors.white,
-    },
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    },
-    modalContent: {
-        backgroundColor: colors.white,
-        borderRadius: radii.md,
-        padding: spacing.lg,
-        alignItems: 'center',
-        width: '90%',
-    },
-    resultTitle: {
-        ...typography.title,
-        color: colors.accentMagenta,
-        marginBottom: spacing.md,
-    },
-    resultText: {
-        ...typography.subtitle,
-        marginBottom: spacing.sm,
-    },
-    scoreText: {
-        ...typography.body,
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: colors.accentYellow,
-        marginVertical: spacing.md,
-    },
-    comparisonContainer: {
-        marginTop: spacing.md,
-        alignItems: 'center',
-    },
-    comparisonTitle: {
-        ...typography.subtitle,
-        fontSize: 16,
-        marginBottom: spacing.sm,
-    },
-    comparisonText: {
-        ...typography.body,
-    },
-    modalButton: {
-        backgroundColor: colors.primary,
-        borderRadius: radii.full,
-        paddingVertical: spacing.sm,
-        paddingHorizontal: spacing.lg,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: spacing.md,
-        width: '80%',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.lg,
+  },
+  header: {
+    marginBottom: spacing.lg,
+  },
+  title: {
+    ...typography.title,
+    textAlign: 'center',
+  },
+  itemContainer: {
+    alignItems: 'center',
+    marginBottom: spacing.lg,
+  },
+  emoji: {
+    fontSize: 80,
+  },
+  itemName: {
+    ...typography.subtitle,
+    marginTop: spacing.md,
+  },
+  itemPrice: {
+    ...typography.body,
+    fontSize: 18,
+    color: colors.graySoft,
+  },
+  cardName: {
+    ...typography.body,
+    marginTop: spacing.sm,
+    fontStyle: 'italic',
+  },
+  sliderContainer: {
+    width: '100%',
+    marginBottom: spacing.lg,
+  },
+  sliderLabel: {
+    ...typography.body,
+    textAlign: 'center',
+    marginBottom: spacing.sm,
+  },
+  button: {
+    backgroundColor: colors.primary,
+    borderRadius: radii.full,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    ...typography.body,
+    fontWeight: '600',
+    color: colors.white,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderRadius: radii.md,
+    padding: spacing.lg,
+    alignItems: 'center',
+    width: '90%',
+  },
+  resultTitle: {
+    ...typography.title,
+    color: colors.accentMagenta,
+    marginBottom: spacing.md,
+  },
+  resultText: {
+    ...typography.subtitle,
+    marginBottom: spacing.sm,
+  },
+  scoreText: {
+    ...typography.body,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.accentYellow,
+    marginVertical: spacing.md,
+  },
+  comparisonContainer: {
+    marginTop: spacing.md,
+    alignItems: 'center',
+  },
+  comparisonTitle: {
+    ...typography.subtitle,
+    fontSize: 16,
+    marginBottom: spacing.sm,
+  },
+  comparisonText: {
+    ...typography.body,
+  },
+  modalButton: {
+    backgroundColor: colors.primary,
+    borderRadius: radii.full,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: spacing.md,
+    width: '80%',
+  },
 });
 
 export default CreditCardGuesstimateScreen;
