@@ -1,12 +1,12 @@
-import { RoadmapModule, UserProgress } from '../types';
 import {
-  CreditCardIcon,
-  CheckingAccountIcon,
   BookIcon,
+  CheckingAccountIcon,
+  CreditCardIcon,
   DumbbellIcon,
   GameControllerIcon,
 } from '@/src/assets/icons';
 import React from 'react';
+import { RoadmapModule, UserProgress } from '../types';
 
 export const mockRoadmapData: RoadmapModule[] = [
   {

@@ -1,11 +1,10 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors, typography } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Tabs } from 'expo-router';
+import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -23,7 +22,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Roadmap',
-          tabBarIcon: ({ color }) => <IconSymbol size={typography.title.fontSize} name="airpods.chargingcase" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={typography.title.fontSize} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen

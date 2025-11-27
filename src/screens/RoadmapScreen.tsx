@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import {
   Alert,
   Dimensions,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
 } from 'react-native';
 import { PathLine, RoadmapNode } from '../components/roadmap';
 import { Dropdown } from '../components/ui/Dropdown';
@@ -105,8 +105,7 @@ const RoadmapScreen: React.FC = () => {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         {activeModule && (
           <View key={activeModule.id} style={styles.levelSection}>
             <View style={styles.nodesContainer}>
